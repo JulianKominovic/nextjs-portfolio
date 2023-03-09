@@ -7,7 +7,15 @@ import type {
 } from "../static/techs";
 import RenderSimpleIcon from "./icons/RenderSimpleIcon";
 
-export default function TechBadge(props: any) {
+type TechBadgeProps = {
+  tech:
+    | FRONTEND_TECH_LIST
+    | BACKEND_TECH_LIST
+    | TOOLS_TECH_LIST
+    | TESTING_AUTOMATION_TECH_LIST;
+};
+
+export default function TechBadge(props: TechBadgeProps) {
   const { tech } = props as {
     tech:
       | FRONTEND_TECH_LIST
