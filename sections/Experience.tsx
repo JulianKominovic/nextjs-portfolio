@@ -1,6 +1,6 @@
 import H2 from "../components/headings/H2";
 import TimelineItem from "../components/TimelineItem";
-import { EXPERIENCE_LIST } from "../static/experience";
+import { EXPERIENCE_LIST } from "../public/experience";
 
 export default function Experience() {
   return (

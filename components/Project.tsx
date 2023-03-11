@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { TECH_ICONS } from "../static/icons";
-import type { PROJECTS } from "../static/projects";
+import { TECH_ICONS } from "../public/icons";
+import type { PROJECTS } from "../public/projects";
 import RenderSimpleIcon from "./icons/RenderSimpleIcon";
 import TechBadge from "./TechBadge";
 

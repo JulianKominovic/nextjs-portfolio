@@ -9,5 +9,15 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/typography")],
+  safelist: [
+    { pattern: /bg-.*-50/ },
+    {
+      pattern: /text-.*-600/,
+    },
+  ],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/container-queries"),
+  ],
 };

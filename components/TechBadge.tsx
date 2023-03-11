@@ -1,10 +1,10 @@
-import { TECH_ICONS } from "../static/icons";
+import { TECH_ICONS } from "../public/icons";
 import type {
   BACKEND_TECH_LIST,
   FRONTEND_TECH_LIST,
   TESTING_AUTOMATION_TECH_LIST,
   TOOLS_TECH_LIST,
-} from "../static/techs";
+} from "../public/techs";
 import RenderSimpleIcon from "./icons/RenderSimpleIcon";
 
 type TechBadgeProps = {

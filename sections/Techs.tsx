@@ -1,13 +1,13 @@
 import type { SimpleIcon } from "simple-icons";
 import H2 from "../components/headings/H2";
 import List from "../components/List";
-import { TECH_ICONS } from "../static/icons";
+import { TECH_ICONS } from "../public/icons";
 import {
   BACKEND_TECH_LIST,
   FRONTEND_TECH_LIST,
   TOOLS_TECH_LIST,
   TESTING_AUTOMATION_TECH_LIST,
-} from "../static/techs";
+} from "../public/techs";
 const techsMapper = (
   techs: Record<string, string>
 ): { text: string; svgPath: string }[] => {

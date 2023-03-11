@@ -1,4 +1,4 @@
-import type { EXPERIENCE_LIST } from "../static/experience";
+import type { EXPERIENCE_LIST } from "../public/experience";
 import Image from "next/image";
 import Tick from "./icons/Tick";
 import TechBadge from "./TechBadge";

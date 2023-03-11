@@ -1,44 +1,55 @@
-import { promises as fs } from "fs";
-import { serialize } from "next-mdx-remote/serialize";
-import { type MDXRemoteSerializeResult } from "next-mdx-remote";
-import { MdxContent } from "../../../components/markdown/MarkdownRender";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import fs from "fs/promises";
 import path from "path";
-type Frontmatter = {
-  title: string;
-  date: string;
-};
+import rehypePrism from "rehype-prism-plus";
+import "../../../styles/themes/base.css";
+import "../../../styles/themes/prism-night-owl.css";
+import "../../../styles/template/plugin-line-numbers.css";
+import LivePreviewLinks from "@/components/markdown/LivePreviewLinks";
 
-type Post<TFrontmatter> = {
-  serialized: MDXRemoteSerializeResult;
-  frontmatter: TFrontmatter;
-};
-
-async function getPost(filepath: string): Promise<Post<Frontmatter>> {
-  const raw = await fs.readFile(filepath, "utf-8");
-
-  const serialized = await serialize(raw, {
-    parseFrontmatter: true,
-  });
-
-  const frontmatter = serialized.frontmatter as Frontmatter;
-
-  return {
-    frontmatter,
-    serialized,
-  };
+function getPostInfo(id: string) {
+  return fs.readFile(
+    path.join(process.cwd(), "public", "posts", `${id}.mdx`),
+    "utf-8"
+  );
 }
 
-export default async function Home({ params }: any) {
-  const { slug } = params;
-  const { serialized, frontmatter } = await getPost(
-    path.join(process.cwd(), "static", "posts", slug + ".mdx")
-  );
+function textContentAsID(textContent: string) {
+  return textContent.replace(/ /g, "-").toLocaleLowerCase();
+}
 
+export default async function Page({ params }: any) {
+  const { slug } = params;
+  const content = await getPostInfo(slug);
   return (
-    <article className="mx-auto prose">
-      <h1>{frontmatter.title}</h1>
-      <p>Published {frontmatter.date}</p>
-      <MdxContent source={serialized} />
-    </article>
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      //https://github.com/PrismJS/prism-themes
+      rehypePlugins={[[rehypePrism, { showLineNumbers: true }]]}
+      components={{
+        a: LivePreviewLinks,
+        h1: (props: any) => (
+          <h1 {...props} id={textContentAsID(String(props.children))} />
+        ),
+        h2: (props: any) => (
+          <h2 {...props} id={textContentAsID(String(props.children))} />
+        ),
+        h3: (props: any) => (
+          <h3 {...props} id={textContentAsID(String(props.children))} />
+        ),
+        h4: (props: any) => (
+          <h4 {...props} id={textContentAsID(String(props.children))} />
+        ),
+        h5: (props: any) => (
+          <h5 {...props} id={textContentAsID(String(props.children))} />
+        ),
+        h6: (props: any) => (
+          <h6 {...props} id={textContentAsID(String(props.children))} />
+        ),
+      }}
+    >
+      {content}
+    </ReactMarkdown>
   );
 }

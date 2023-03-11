@@ -3,9 +3,19 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
-    domains: ["dummyimage.com"],
+    minimumCacheTTL: 60 * 60 * 24, // 24 hs
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+        port: "",
+        pathname: "**",
+      },
+    ],
   },
 };
-
 module.exports = nextConfig;

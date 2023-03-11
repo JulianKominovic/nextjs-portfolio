@@ -1,7 +1,7 @@
 import H2 from "../components/headings/H2";
 import Project from "../components/Project";
 import SmallProject from "../components/SmallProject";
-import { PROJECTS, SMALL_PROJECTS } from "../static/projects";
+import { PROJECTS, SMALL_PROJECTS } from "../public/projects";
 // <!-- TODO: Cada vez que entra algun proyecto al viewport ambientar todo el portfolio para que matchee con cada proyecto -->
 export default function Projects() {
   return (

@@ -1,4 +1,4 @@
-import type { ReducedProject } from "../static/projects";
+import type { ReducedProject } from "../public/projects";
 export default function SmallProject(props: ReducedProject) {
   return (
     <a

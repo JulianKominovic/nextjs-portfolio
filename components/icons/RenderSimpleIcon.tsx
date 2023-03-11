@@ -10,12 +10,12 @@ export default function RenderSimpleIcon(props: Props) {
       strokeLinejoin="round"
       strokeLinecap="round"
       viewBox="0 0 24 24"
-      height="18px"
-      width="18px"
-      className={`${rest.className || "fill-indigo-500"} mx-1`}
+      height="1em"
+      width="1em"
+      className={`${rest.className || "fill-indigo-500"}  mx-1`}
       {...rest}
     >
-      <path d={svgPath}></path>
+      <path fill="currentColor" d={svgPath}></path>
     </svg>
   );
 }
