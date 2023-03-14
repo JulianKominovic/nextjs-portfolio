@@ -1,6 +1,4 @@
-"use client";
-
-import { LayoutItem } from "@/app/page";
+import { LayoutItem } from "@/app/dashboard/page";
 import { useState, useEffect } from "react";
 import { Responsive as GridLayout } from "react-grid-layout";
 
@@ -9,222 +7,217 @@ import join from "@/lib/join";
 import RenderSimpleIcon from "@/components/icons/RenderSimpleIcon";
 import { siSimpleicons } from "simple-icons";
 
-// const commonClassNames =
-//   "p-4 bg-neutral-50 border border-neutral-200 rounded-xl flex items-center justify-between";
+type GridProps = {
+  layout: LayoutItem[];
+  selected: string | null;
+  setSelected: (value: string | null) => void;
+  updateSelectedLayoutItem: (value: Partial<LayoutItem>) => void;
+  selectedLayoutItem: LayoutItem | undefined;
+  setLayout: (value: LayoutItem[]) => void;
+};
 
-// const experience: LayoutItem[] = EXPERIENCE_LIST.flatMap(
-//   (
-//     {
-//       title,
-//       endDate,
-//       exprienceAdquired,
-//       imageSrcName,
-//       role,
-//       startDate,
-//       technologiesUsed,
-//       tldrDescriptions,
-//     },
-//     index
-//   ) => {
-//     return [
-//       {
-//         ...commonMockProps,
-//         i: index + title,
-//         children: (props) => {
-//           return (
-//             <div
-//               {...props}
-//               className={join(
-//                 commonClassNames,
-//                 "bg-gradient-to-tr ",
-//                 title === "Koin"
-//                   ? "from-neutral-50 to-green-100"
-//                   : "from-neutral-50 to-cyan-100"
-//               )}
-//             >
-//               <h1 className="text-lg font-semibold ">{title}</h1>
-//               <Image
-//                 alt={title}
-//                 className="object-contain w-12 h-12 rounded-full"
-//                 src={imageSrcName}
-//                 width={200}
-//                 height={60}
-//               />
-//             </div>
-//           );
-//         },
-//       },
-//       {
-//         ...commonMockProps,
-//         i: index + role,
-//         children: (props) => {
-//           return (
-//             <div
-//               {...props}
-//               className={join(commonClassNames, "@container text-xl")}
-//             >
-//               <h2 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-300  @xs:text-xl @sm:text-2xl @md:text-4xl @lg:text-6xl">
-//                 {role}
-//               </h2>
-//             </div>
-//           );
-//         },
-//       },
-//       {
-//         ...commonMockProps,
-//         i: index + startDate,
-//         children: (props) => {
-//           return (
-//             <div
-//               {...props}
-//               className={join(commonClassNames, "text-sm text-neutral-500")}
-//             >
-//               <time dateTime={startDate}>
-//                 {startDate} - {endDate}
-//               </time>
-//             </div>
-//           );
-//         },
-//       },
-//       ...exprienceAdquired.map((item) => {
-//         return {
-//           ...commonMockProps,
-//           i: index + role + item,
-//           children: (props) => {
-//             return (
-//               <div
-//                 {...props}
-//                 className={join(
-//                   commonClassNames,
-//                   "text-sm bg-indigo-50 text-indigo-600"
-//                 )}
-//               >
-//                 {item}
-//               </div>
-//             );
-//           },
-//         };
-//       }),
-//       ...technologiesUsed.map((item) => {
-//         return {
-//           ...commonMockProps,
-//           i: index + role + item,
-//           children: (props) => {
-//             return (
-//               <div
-//                 {...props}
-//                 className={join(
-//                   commonClassNames,
-//                   " bg-pink-50 text-pink-600 @container"
-//                 )}
-//               >
-//                 <p className="text-sm @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-4xl">
-//                   {item}
-//                 </p>
-//                 <RenderSimpleIcon
-//                   className="text-2xl @sm:text-4xl @md:text-5xl @lg:text-6xl"
-//                   svgPath={TECH_ICONS[item].path}
-//                 />
-//               </div>
-//             );
-//           },
-//         };
-//       }),
-//     ];
-//   }
-// ).reverse();
+const BREAKPOINT = 1000;
+const ROW_HEIGHT = 40;
+const MARGINS = 32;
+const BREAKPOINTS = { lg: 1200, md: 996, sm: 540, xs: 480, xxs: 0 };
+const COLS = {
+  lg: 5,
+  md: 5,
+  sm: 5,
+  xs: 1,
+  xxs: 1,
+};
 
-// const layout = [...experience];
-
-export default function Grid({ layout, selected, setSelected }) {
+export default function Grid({
+  layout,
+  selected,
+  setSelected,
+  updateSelectedLayoutItem,
+  setLayout,
+  selectedLayoutItem,
+}: GridProps) {
   const [width, setWidth] = useState(
-    window.innerWidth > 1024 ? 1024 : window.innerWidth
+    window?.innerWidth > BREAKPOINT ? BREAKPOINT : window?.innerWidth
   );
+  const [editing, setEditing] = useState(true);
 
   useEffect(() => {
+    if (!window) return;
     const updateWidth = () => {
-      if (window.innerWidth > 1024) setWidth(1024);
-      setWidth(window.innerWidth);
+      if (window?.innerWidth > BREAKPOINT) setWidth(BREAKPOINT);
+      setWidth(window?.innerWidth);
     };
-    window.addEventListener("resize", updateWidth, {
+    window?.addEventListener("resize", updateWidth, {
       passive: true,
     });
-    return () => window.removeEventListener("resize", updateWidth);
+    return () => window?.removeEventListener("resize", updateWidth);
   }, []);
 
+  useEffect(() => {
+    const fetchOgInfo = async (url: string) => {
+      const res = await fetch(`/api/scrapping?url=${url}`);
+      const data = await res.json();
+      return { ...data, requestedUrl: url };
+    };
+    if (!editing) {
+      const layoutItemsWithHref = layout
+        .map((item) => item.href)
+        .filter(Boolean) as string[];
+      console.log(layoutItemsWithHref);
+      Promise.allSettled(layoutItemsWithHref.map(fetchOgInfo)).then(
+        (results) => {
+          setLayout((prev: LayoutItem[]) => {
+            return prev.map((item) => {
+              const matched = results.find(
+                (el) => el.value.requestedUrl === item.href
+              );
+              console.log({
+                matched,
+                item,
+              });
+              if (matched && matched.status === "fulfilled") {
+                return {
+                  ...item,
+                  imageSrc: matched?.value?.image?.url,
+                };
+              }
+              return item;
+            });
+          });
+        }
+      );
+    }
+  }, [editing]);
+
+  const columnsNumber = width > BREAKPOINTS.xs ? 5 : 1;
+  const columnWidth = width / columnsNumber;
   return (
-    <GridLayout
-      useCSSTransforms
-      layouts={{
-        lg: layout,
-        md: layout,
-        sm: layout,
-        xs: layout,
-        xxs: layout,
-      }}
-      breakpoints={{ lg: 1200, md: 996, sm: 540, xs: 480, xxs: 0 }}
-      cols={{
-        lg: 5,
-        md: 5,
-        sm: 5,
-        xs: 1,
-        xxs: 1,
-      }}
-      compactType="horizontal"
-      margin={[16, 16]}
-      rowHeight={30}
-      onLayoutChange={(layout) => {
-        console.log(layout);
-      }}
-      className="layout"
-      resizeHandles={["se"]}
-      verticalCompact={true}
-      width={width}
-      // isDraggable={false}
-      // isResizable={false}
-    >
-      {layout.map((item: LayoutItem) => {
-        // const Exec = <GridItem {...item} key={item.i} />;
-        const { text, icon, href, imageSrc, classes, ...rest } = item;
-        return (
-          <div
-            {...rest}
-            key={item.i}
-            className={join(
-              "flex items-center justify-between p-4 border  border-neutral-200 rounded-xl hover:bg-neutral-100 ",
-              classes?.card ? classes.card : "bg-neutral-50",
-              (rest as any).className,
-              selected === item.i
-                ? " ring-2 ring-neutral-300 ring-offset-8"
-                : ""
-            )}
-            onClick={() => {
-              setSelected(item.i);
-            }}
-          >
-            {text ? <p className={join(classes?.text)}>{text}</p> : null}
-            {imageSrc ? (
-              <Image
-                alt={text}
-                className={join(
-                  "object-contain w-12 h-12 rounded-full",
-                  classes?.image
-                )}
-                src={imageSrc}
-                width={200}
-                height={60}
-              />
-            ) : null}
-            {icon ? (
-              <RenderSimpleIcon
-                svgPath={siSimpleicons[icon]?.path || ""}
-                className={join(classes?.icon)}
-              />
-            ) : null}
-            {href ? <a></a> : null}
-          </div>
-        );
-      })}
-    </GridLayout>
+    <>
+      <button
+        onClick={() => {
+          setEditing(!editing);
+        }}
+      >
+        Set editing {editing ? "OFF" : "ON"}
+      </button>
+      <GridLayout
+        useCSSTransforms
+        layouts={{
+          lg: layout,
+          md: layout,
+          sm: layout,
+          xs: layout,
+          xxs: layout,
+        }}
+        breakpoints={BREAKPOINTS}
+        cols={COLS}
+        compactType="horizontal"
+        margin={[MARGINS, MARGINS]}
+        rowHeight={ROW_HEIGHT}
+        onLayoutChange={(newLayout) => {
+          const finalLayout = layout.map((item) => {
+            const matched = newLayout.find((el) => el.i === item.i);
+            const coords = {
+              x: (matched as any).x,
+              y: (matched as any).y,
+              w: (matched as any).w,
+              h: (matched as any).h,
+            };
+            return {
+              ...item,
+              ...coords,
+            };
+          });
+          setLayout(finalLayout);
+        }}
+        className="layout"
+        resizeHandles={["se"]}
+        verticalCompact={true}
+        width={width}
+        isDraggable={editing}
+        isResizable={editing}
+      >
+        {layout.map((item: LayoutItem) => {
+          const { text, icon, href, imageSrc, classes, ...rest } = item;
+
+          const height = item.h * ROW_HEIGHT + item.h * MARGINS;
+          const width = item.w * columnWidth;
+          const isVertical = height > width;
+          console.log({
+            height,
+            width,
+            isVertical,
+            columnWidth,
+            h: item.h,
+            w: item.w,
+          });
+
+          return (
+            <a
+              {...rest}
+              key={item.i}
+              href={href}
+              target="_blank"
+              className={join(
+                "flex gap-4 items-center justify-between border  border-neutral-100 shadow-sm rounded-xl hover:bg-neutral-100 overflow-hidden",
+                classes?.card ? classes.card : "bg-neutral-50",
+                (rest as any).className,
+                selected === item.i
+                  ? " ring-2 ring-neutral-300 ring-offset-8"
+                  : "",
+                !text && imageSrc ? "p-0" : "p-4",
+                isVertical ? "flex-col" : "flex-row",
+                href ? "cursor-pointer" : "cursor-default"
+              )}
+              onClick={(e) => {
+                setSelected(selected === item.i ? null : item.i);
+                if (editing) e.preventDefault();
+              }}
+            >
+              {text ? (
+                <p
+                  contentEditable
+                  suppressContentEditableWarning={true}
+                  onInput={(e) => {
+                    updateSelectedLayoutItem({
+                      ...selectedLayoutItem,
+                      text: e.currentTarget.textContent,
+                    });
+                  }}
+                  className={join(
+                    classes?.text,
+                    "focus:outline-offset-4 block w-full",
+                    imageSrc && !isVertical ? "max-w-[33%]" : ""
+                  )}
+                >
+                  {text}
+                </p>
+              ) : null}
+              {imageSrc ? (
+                <img
+                  alt={text}
+                  className={join(
+                    text
+                      ? "object-contain w-full   h-full object-cover"
+                      : "object-contain w-full h-full object-cover",
+                    isVertical ? "rounded-b-xl" : "rounded-lg",
+                    classes?.image
+                  )}
+                  src={imageSrc}
+                  width={200}
+                  height={60}
+                />
+              ) : null}
+              {icon ? (
+                <RenderSimpleIcon
+                  svgPath={siSimpleicons[icon]?.path || ""}
+                  className={join(classes?.icon)}
+                />
+              ) : null}
+            </a>
+          );
+        })}
+      </GridLayout>
+    </>
   );
 }

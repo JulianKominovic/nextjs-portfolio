@@ -33,11 +33,12 @@ export async function GET(request: Request) {
       ogImage: image,
       favicon,
     } = result;
+    const finalImage = Array.isArray(image) ? image[0] : image;
     return new NextResponse(
       JSON.stringify({
         title,
         description,
-        image,
+        image: finalImage,
         error,
         favicon,
       }),

@@ -29,7 +29,12 @@ function Content(
   const { ogData, isLoading, setIsOpen } = props;
   if (ogData?.error) return null;
   return (
-    <Tooltip.Content asChild sideOffset={5} align="start">
+    <Tooltip.Content
+      asChild
+      sideOffset={5}
+      align="start"
+      className="hidden lg:block"
+    >
       <motion.a
         {...(props as any)}
         initial={variants.hide}
@@ -51,7 +56,7 @@ function Content(
               <Image
                 height={ogData?.image.height || 300}
                 width={ogData?.image.width || 320}
-                src={ogData?.image.url}
+                src={ogData?.image.url || ogData.favicon || ""}
                 alt={ogData?.title}
                 className="rounded-xl"
               ></Image>

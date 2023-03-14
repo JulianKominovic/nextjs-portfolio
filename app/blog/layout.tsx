@@ -4,8 +4,10 @@ type Props = {
 
 const PostsLayout = ({ children }: Props) => {
   return (
-    <div className="px-4 mx-auto prose">
-      layout
+    <div
+      id="post-content"
+      className="relative px-4 mx-auto overflow-x-hidden prose"
+    >
       {children}
     </div>
   );

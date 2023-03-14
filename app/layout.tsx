@@ -1,3 +1,6 @@
+import Blog from "@/assets/icons/Blog";
+import Home from "@/assets/icons/Home";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata = {
@@ -13,7 +16,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className=" bg-primary text-light-primary bg-texture">
+      <body className="min-h-screen py-12 antialiased sm:py-24 bg-primary text-light-primary bg-texture">
+        <nav className="z-50 fixed w-[100vw] prose -translate-x-1/2 top-2 sm:top-4 left-1/2">
+          <ul className="flex gap-4 px-4 py-1 mx-auto list-none bg-white bg-opacity-50 border w-fit justify-evenly rounded-2xl backdrop-blur-md">
+            <li className="p-0 m-0">
+              <Link
+                className="flex items-center justify-center w-10 m-0 no-underline transition-colors rounded-full aspect-square hover:transition-colors bg-neutral-50 hover:bg-neutral-200"
+                href="/"
+              >
+                <Home />
+              </Link>
+            </li>
+            <li className="p-0 m-0">
+              <Link
+                className="flex items-center justify-center w-10 m-0 no-underline transition-colors rounded-full aspect-square hover:transition-colors bg-neutral-50 hover:bg-neutral-200"
+                href="/blog"
+              >
+                <Blog />
+              </Link>
+            </li>
+          </ul>
+        </nav>
         {children}
       </body>
     </html>

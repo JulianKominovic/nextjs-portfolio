@@ -1,8 +1,12 @@
 import { LayoutItem } from "@/app/page";
 import join from "@/lib/join";
 import * as RadixTabs from "@radix-ui/react-tabs";
-import Colors from "tailwindcss/colors";
-console.log(Colors);
+import GradientPastelColors from "./GradientPastelColors";
+import PastelColors from "./PastelColors";
+import * as RadixAccordion from "@radix-ui/react-accordion";
+import FontSize from "./FontSize";
+import StylesTab from "./StylesTabs";
+
 export type DashboardSettingsProps = {
   selectedLayoutItem?: LayoutItem;
   updateSelectedLayoutItem: (layoutItem: LayoutItem) => void;
@@ -31,6 +35,7 @@ export default function DashboardSettings({
         <Trigger disabled={!selectedLayoutItem} value="adjustments">
           Settings
         </Trigger>
+
         <Trigger disabled={!selectedLayoutItem} value="styles">
           Styles
         </Trigger>
@@ -104,48 +109,14 @@ export default function DashboardSettings({
         })}
       </RadixTabs.Content>
 
-      <RadixTabs.Content className="w-full overflow-auto h-72" value="styles">
-        <h2>Pasteles</h2>
-        <hgroup className="flex flex-wrap w-full gap-3 p-4 mb-4">
-          {Object.entries(Colors)
-            .filter(([key, value]) => {
-              return typeof value !== "string";
-            })
-            .map(([k, v]) => {
-              return Object.entries(v)
-                .filter(([k]) => k === "50")
-                .map(([key, value]) => {
-                  return (
-                    <button
-                      className="min-w-[64px] h-16 px-4 rounded-lg shadow-lg focus:ring focus:ring-offset-2 focus:ring-indigo-200"
-                      key={key + value + k}
-                      style={{ backgroundColor: value }}
-                      onClick={() => {
-                        console.log(selectedLayoutItem?.classes);
-                        updateSelectedLayoutItem({
-                          ...selectedLayoutItem,
-                          classes: {
-                            card: join(
-                              `bg-${k}-${key} text-${k}-600`,
-                              selectedLayoutItem?.classes?.card
-                                ?.split(" ")
-                                .filter(
-                                  (c) =>
-                                    !c.startsWith("bg-") &&
-                                    !c.startsWith("text-")
-                                )
-                                .join(" ")
-                            ),
-                          },
-                        } as any);
-                      }}
-                    >
-                      {k}
-                    </button>
-                  );
-                });
-            })}
-        </hgroup>
+      <RadixTabs.Content
+        className="w-full h-[calc(100vh-180px)]  overflow-auto"
+        value="styles"
+      >
+        <StylesTab
+          updateSelectedLayoutItem={updateSelectedLayoutItem}
+          selectedLayoutItem={selectedLayoutItem}
+        />
       </RadixTabs.Content>
     </RadixTabs.Root>
   );

@@ -14,6 +14,18 @@ module.exports = {
     {
       pattern: /text-.*-600/,
     },
+    {
+      pattern: /from-.*-50/,
+    },
+    {
+      pattern: /to-.*-50/,
+    },
+    {
+      pattern: /text-.*/,
+    },
+    {
+      pattern: /font-.*/,
+    },
   ],
   plugins: [
     require("@tailwindcss/typography"),
