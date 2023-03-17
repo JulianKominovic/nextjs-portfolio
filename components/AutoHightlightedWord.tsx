@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 export default function AutoHighlightedWord({ highlightedWord }) {
   useEffect(() => {
+    if (!highlightedWord) return;
     const findNodeByContent = (
       text,
       root = document.querySelector("#post-content")

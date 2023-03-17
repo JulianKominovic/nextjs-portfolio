@@ -48,7 +48,9 @@ export default async function Page({ params, searchParams }) {
       >
         {content}
       </ReactMarkdown>
-      <AutoHighlightedWord highlightedWord={highlightedWord} />
+      {highlightedWord && (
+        <AutoHighlightedWord highlightedWord={highlightedWord} />
+      )}
     </>
   );
 }

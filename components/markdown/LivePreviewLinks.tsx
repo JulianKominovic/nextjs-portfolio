@@ -118,7 +118,6 @@ export default function LivePreviewLinks(props: Props) {
             fetch(`/api/scrapping?url=${props.href}`)
               .then((res) => res.json())
               .then((data) => {
-                console.log(data);
                 setOgData(data);
                 setIsLoading(false);
               })

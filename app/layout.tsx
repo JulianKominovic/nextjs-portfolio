@@ -1,11 +1,13 @@
 import fs from "fs/promises";
 import Navbar from "@/components/navbar/Navbar";
 import Script from "next/script";
+import { cookies } from "next/headers";
 import path from "path";
 import { readPostContent, readPostsMetadata } from "@/lib/posts.server";
 import "./globals.css";
 import { SPANISH_STOP_WORDS } from "@/public/spanishStopWords";
 import MiniSearch from "minisearch";
+import join from "@/lib/join";
 
 export const metadata = {
   title: "Create Next App",
@@ -68,19 +70,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const theme = cookies().get("theme")?.value || "dark";
   return (
-    <html lang="es" className="scroll-smooth">
-      <head>
-        <Script strategy="afterInteractive" id="theme">
-          {`if (typeof window !== "undefined") {
-            const theme = localStorage.getItem("theme") || "light";
-            document.documentElement.classList.add(theme);
-          }
-`}
-        </Script>
-      </head>
+    <html lang="es" className={join("scroll-smooth", theme as string)}>
+      <head></head>
       <body className="min-h-screen py-12 antialiased sm:py-24 bg-primary text-light-primary bg-texture dark:text-neutral-100">
-        <Navbar indexes={await buildIndexes()} />
+        <Navbar
+          indexes={await buildIndexes()}
+          initialTheme={cookies().get("theme")?.value || "dark"}
+        />
         {children}
       </body>
     </html>

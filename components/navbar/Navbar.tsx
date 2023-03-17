@@ -8,7 +8,7 @@ import Searchbar from "./Search";
 import ToggleTheme from "./ToggleTheme";
 import { useState } from "react";
 
-export default function Navbar({ indexes }) {
+export default function Navbar({ indexes, initialTheme }) {
   const [searchIsOpen, setSearchIsOpen] = useState(false);
 
   return (
@@ -44,7 +44,7 @@ export default function Navbar({ indexes }) {
           </motion.li>
           {!searchIsOpen && (
             <motion.li className="p-0 m-0" key="theme-opt">
-              <ToggleTheme />
+              <ToggleTheme initialTheme={initialTheme} />
             </motion.li>
           )}
         </AnimatePresence>

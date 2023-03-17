@@ -24,7 +24,6 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
     const query = e.target.value;
     setResults(index.current.search(query).slice(0, 5));
   };
-  console.log(results);
   return (
     <Popover.Root
       open={isOpen}
@@ -70,7 +69,6 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
                   duration: 1,
                 }}
                 onAnimationComplete={(e) => {
-                  console.log(e);
                   inputRef.current?.focus();
                 }}
                 type="text"
