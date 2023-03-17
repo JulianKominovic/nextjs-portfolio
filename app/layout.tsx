@@ -17,15 +17,12 @@ const buildIndexes = async () => {
     storeFields: ["title", "description", "tags"], // fields to return with search results,
   });
   const indexExists = await fs
-    .lstat(path.join(process.cwd(), "public", "indexes.json"))
+    .lstat(path.join("tmp", "indexes.json"))
     .then(() => true)
     .catch(() => false);
 
   if (indexExists) {
-    const idx = await fs.readFile(
-      path.join(process.cwd(), "public", "indexes.json"),
-      "utf-8"
-    );
+    const idx = await fs.readFile(path.join("tmp", "indexes.json"), "utf-8");
 
     return idx;
   }
