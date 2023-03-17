@@ -17,12 +17,12 @@ const buildIndexes = async () => {
     storeFields: ["title", "description", "tags"], // fields to return with search results,
   });
   const indexExists = await fs
-    .lstat(path.join("tmp", "indexes.json"))
+    .lstat(`/tmp/indexes.json`)
     .then(() => true)
     .catch(() => false);
 
   if (indexExists) {
-    const idx = await fs.readFile(path.join("tmp", "indexes.json"), "utf-8");
+    const idx = await fs.readFile(`/tmp/indexes.json`, "utf-8");
 
     return idx;
   }
@@ -53,7 +53,7 @@ const buildIndexes = async () => {
   miniSearch.addAll(results);
   const index = JSON.stringify(miniSearch.toJSON());
 
-  await fs.writeFile(path.join(process.cwd(), "public", "indexes.json"), index);
+  await fs.writeFile(`/tmp/indexes.json`, index);
 
   return index;
 };
