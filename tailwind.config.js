@@ -9,24 +9,25 @@ module.exports = {
   theme: {
     extend: {},
   },
-  safelist: [
-    { pattern: /bg-.*-50/ },
-    {
-      pattern: /text-.*-600/,
-    },
-    {
-      pattern: /from-.*-50/,
-    },
-    {
-      pattern: /to-.*-50/,
-    },
-    {
-      pattern: /text-.*/,
-    },
-    {
-      pattern: /font-.*/,
-    },
-  ],
+  darkMode: "class",
+  // safelist: [
+  //   { pattern: /bg-.*-50/ },
+  //   {
+  //     pattern: /text-.*-600/,
+  //   },
+  //   {
+  //     pattern: /from-.*-50/,
+  //   },
+  //   {
+  //     pattern: /to-.*-50/,
+  //   },
+  //   {
+  //     pattern: /text-.*/,
+  //   },
+  //   {
+  //     pattern: /font-.*/,
+  //   },
+  // ],
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/line-clamp"),

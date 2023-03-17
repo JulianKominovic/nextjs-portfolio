@@ -42,13 +42,13 @@ function Content(
         animate={variants.show}
         transition={{ duration: 0.1 }}
         target={props.href?.startsWith("#") ? "_self" : "_blank"}
-        className="relative block w-56 p-4 transition-all origin-top border shadow-lg hover:transition-all rounded-xl bg-neutral-50 border-neutral-200 hover:shadow-2xl hover:w-80"
+        className="relative block w-56 p-4 transition-all origin-top border shadow-lg hover:transition-all rounded-xl bg-neutral-50 border-neutral-200 hover:shadow-2xl hover:w-80 dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-200"
       >
         {isLoading ? (
           <>
-            <div className="w-full h-24 mb-2 bg-gray-300 rounded-lg animate-pulse" />
-            <div className="w-full h-6 mb-2 bg-gray-300 rounded-lg animate-pulse" />
-            <div className="w-full h-10 bg-gray-300 rounded-lg animate-pulse" />
+            <div className="w-full h-24 mb-2 bg-gray-300 rounded-lg dark:bg-neutral-800 animate-pulse" />
+            <div className="w-full h-6 mb-2 bg-gray-300 rounded-lg dark:bg-neutral-800 animate-pulse" />
+            <div className="w-full h-10 bg-gray-300 rounded-lg dark:bg-neutral-800 animate-pulse" />
           </>
         ) : (
           <>
@@ -63,7 +63,7 @@ function Content(
             ) : null}
             <footer
               className={join(
-                "pt-2 backdrop-blur-xl bg-opacity-90 bg-neutral-50",
+                "pt-2 backdrop-blur-xl bg-opacity-90 bg-neutral-50 dark:bg-neutral-900",
                 ogData?.image?.url ? "-mt-12" : ""
               )}
             >

@@ -10,7 +10,7 @@ import ProfilPic from "../assets/images/pic.jpeg";
 export default async function Home() {
   const posts = await readLastPosts();
   return (
-    <main className="w-full p-6 mx-auto overflow-x-hidden prose">
+    <main className="w-full p-6 mx-auto overflow-x-hidden prose dark:prose-invert">
       <header className="flex flex-col ">
         <Image
           src={ProfilPic}

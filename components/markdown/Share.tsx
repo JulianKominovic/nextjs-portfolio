@@ -10,11 +10,9 @@ export default function Share() {
         if (navigator.share) {
           navigator
             .share({
-              title: "WebShare API Demo",
-              url: "https://codepen.io/ayoisaiah/pen/YbNazJ",
-            })
-            .then(() => {
-              console.log("Thanks for sharing!");
+              title: document.title,
+              url: window.location.href,
+              text: document.title,
             })
             .catch(console.error);
         } else {

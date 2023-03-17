@@ -8,7 +8,7 @@ export default function CommonButton(
     <button
       {...props}
       className={join(
-        "flex items-center justify-center w-8 transition-colors rounded-full aspect-square hover:transition-colors hover:bg-neutral-200",
+        "flex items-center justify-center w-8 transition-colors rounded-full aspect-square hover:transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700   ",
         props.className
       )}
     />

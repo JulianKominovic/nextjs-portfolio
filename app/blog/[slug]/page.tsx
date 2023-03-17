@@ -7,13 +7,15 @@ import "../../../styles/template/plugin-line-numbers.css";
 import LivePreviewLinks from "@/components/markdown/LivePreviewLinks";
 import { readPostContent } from "@/lib/posts.server";
 import CustomElement from "@/components/markdown/CustomElements";
+import AutoHighlightedWord from "@/components/AutoHightlightedWord";
 
 function textContentAsID(textContent: string) {
   return textContent.replace(/ /g, "-").toLocaleLowerCase();
 }
 
-export default async function Page({ params }: any) {
+export default async function Page({ params, searchParams }) {
   const { slug } = params;
+  const highlightedWord = searchParams["highlight"];
   const content = await readPostContent(slug);
   return (
     <>
@@ -46,6 +48,7 @@ export default async function Page({ params }: any) {
       >
         {content}
       </ReactMarkdown>
+      <AutoHighlightedWord highlightedWord={highlightedWord} />
     </>
   );
 }

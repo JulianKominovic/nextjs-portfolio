@@ -4,18 +4,78 @@
 * {
   -webkit-tap-highlight-color: transparent;
 }
-.bg-texture {
-  background-color: rgba(255, 255, 255, 0);
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #d1d1d1 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #d1d1d1;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
+:root.dark * {
+  scrollbar-width: auto;
+  scrollbar-color: #d1d1d1 #ffffff;
+}
+
+:root.dark *::-webkit-scrollbar {
+  width: 14px;
+}
+
+:root.dark *::-webkit-scrollbar-track {
+  background: rgb(18, 18, 18);
+}
+
+:root.dark *::-webkit-scrollbar-thumb {
+  background-color: #222222;
+  border-radius: 10px;
+  border: 3px solid rgb(18, 18, 18);
+}
+/* ===== Scrollbar CSS ===== */
+
+:root.dark .bg-texture {
+  background-color: rgba(23, 23, 23, 1);
   opacity: 1;
   background-image: linear-gradient(
-      rgba(237, 237, 237, 0.2) 1.8px,
+      rgba(33, 33, 33, 0.2) 1.8px,
       transparent 1.8px
     ),
-    linear-gradient(90deg, rgba(237, 237, 237, 0.2) 1.8px, transparent 1.8px),
-    linear-gradient(rgba(237, 237, 237, 0.2) 0.9px, transparent 0.9px),
+    linear-gradient(90deg, rgba(33, 33, 33, 0.2) 1.8px, transparent 1.8px),
+    linear-gradient(rgba(33, 33, 33, 0.2) 0.9px, transparent 0.9px),
     linear-gradient(
       90deg,
-      rgba(237, 237, 237, 0.2) 0.9px,
+      rgba(33, 33, 33, 0.2) 0.9px,
+      rgba(33, 33, 33, 0) 0.9px
+    );
+  background-size: 45px 45px, 45px 45px, 9px 9px, 9px 9px;
+  background-position: -1.8px -1.8px, -1.8px -1.8px, -0.9px -0.9px,
+    -0.9px -0.9px;
+}
+.bg-texture {
+  background-color: rgba(245, 245, 245, 1);
+  opacity: 1;
+  background-image: linear-gradient(
+      rgba(230, 230, 230, 0.2) 1.8px,
+      transparent 1.8px
+    ),
+    linear-gradient(90deg, rgba(230, 230, 230, 0.2) 1.8px, transparent 1.8px),
+    linear-gradient(rgba(230, 230, 230, 0.2) 0.9px, transparent 0.9px),
+    linear-gradient(
+      90deg,
+      rgba(230, 230, 230, 0.2) 0.9px,
       rgba(255, 255, 255, 0) 0.9px
     );
   background-size: 45px 45px, 45px 45px, 9px 9px, 9px 9px;
