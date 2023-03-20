@@ -15,7 +15,7 @@ const PostsLayout = ({ children }: Props) => {
   return (
     <div
       id="post-content"
-      className="relative px-4 py-20 mx-auto overflow-x-hidden prose dark:prose-invert"
+      className="relative px-4 py-20 mx-auto overflow-x-hidden prose prose-lg dark:prose-invert"
     >
       {children}
     </div>

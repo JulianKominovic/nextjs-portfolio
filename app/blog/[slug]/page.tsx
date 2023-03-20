@@ -8,6 +8,7 @@ import LivePreviewLinks from "@/components/markdown/LivePreviewLinks";
 import { readPost, readPostContent } from "@/lib/posts.server";
 import CustomElement from "@/components/markdown/CustomElements";
 import AutoHighlightedWord from "@/components/AutoHightlightedWord";
+import Image from "next/image";
 
 function textContentAsID(textContent: string) {
   return textContent.replace(/ /g, "-").toLocaleLowerCase();
@@ -36,6 +37,16 @@ export default async function Page({ params, searchParams }) {
         components={{
           a: LivePreviewLinks,
           p: CustomElement,
+          img: (props) => (
+            <a href={props.src} target="_blank">
+              <Image
+                {...props}
+                width={600}
+                height={400}
+                className="relative transition-transform rounded-md cursor-pointer hover:scale-105 hover:transition-transform "
+              />
+            </a>
+          ),
           h1: (props: any) => (
             <h1 {...props} id={textContentAsID(String(props.children))} />
           ),
