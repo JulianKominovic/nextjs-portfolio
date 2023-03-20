@@ -10,24 +10,27 @@ module.exports = {
     extend: {},
   },
   darkMode: "class",
-  // safelist: [
-  //   { pattern: /bg-.*-50/ },
-  //   {
-  //     pattern: /text-.*-600/,
-  //   },
-  //   {
-  //     pattern: /from-.*-50/,
-  //   },
-  //   {
-  //     pattern: /to-.*-50/,
-  //   },
-  //   {
-  //     pattern: /text-.*/,
-  //   },
-  //   {
-  //     pattern: /font-.*/,
-  //   },
-  // ],
+  safelist: [
+    // { pattern: /bg-.*-50/ },
+    // {
+    //   pattern: /text-.*-600/,
+    // },
+    // {
+    //   pattern: /from-.*-50/,
+    // },
+    // {
+    //   pattern: /to-.*-50/,
+    // },
+    // {
+    //   pattern: /text-.*/,
+    // },
+    // {
+    //   pattern: /font-.*/,
+    // },
+    {
+      pattern: /bg-black/,
+    },
+  ],
   plugins: [
     require("@tailwindcss/typography"),
     require("@tailwindcss/line-clamp"),

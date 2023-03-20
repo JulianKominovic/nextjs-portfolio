@@ -54,3 +54,11 @@ export async function readPostContent(postId: string) {
   const { content } = grayMatter(postTextContent);
   return content;
 }
+export async function readPost(postId: string) {
+  const postTextContent = await fs.readFile(
+    path.join(process.cwd(), "public", "posts", `${postId}.md`),
+    "utf-8"
+  );
+  const { content, data } = grayMatter(postTextContent);
+  return { content, ...data } as PostMetadata & { content: string };
+}

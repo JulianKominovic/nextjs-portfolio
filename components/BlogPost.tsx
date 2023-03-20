@@ -14,10 +14,7 @@ export default function BlogPost({
       key={title + "as"}
       href={`/blog/${filename.slice(0, -3)}`}
     >
-      <article
-        className="p-4 transition-all border line-clamp-2 rounded-xl border-neutral-50 hover:shadow-xl hover:-translate-y-1 bg-gradient-to-bl from-white to-neutral-100 hover:transition-all hover:border-neutral-200 active:scale-95 active:translate-y-0 active:shadow-none active:transition-all dark:from-black dark:to-neutral-900 dark:border-neutral-800 hover:dark:shadow-neutral-800"
-        key={title}
-      >
+      <article className="p-4 transition-all border rounded-xl border-neutral-200 hover:shadow-xl hover:shadow-neutral-200 hover:-translate-y-1 bg-gradient-to-tr from-white to-neutral-100 hover:transition-all hover:border-neutral-200 active:scale-95 active:translate-y-0 active:shadow-none active:transition-all dark:from-neutral-900 dark:to-neutral-800 dark:border-neutral-800 hover:dark:shadow-black">
         <h3 className="m-0 line-clamp-2">{title}</h3>
         {date ? (
           <p className="m-0 text-sm line-line-clamp-2 text-neutral-500 ">

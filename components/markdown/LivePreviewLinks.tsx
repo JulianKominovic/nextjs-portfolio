@@ -33,7 +33,7 @@ function Content(
       asChild
       sideOffset={5}
       align="start"
-      className="hidden lg:block"
+      className="hidden lg:block "
     >
       <motion.a
         {...(props as any)}

@@ -11,14 +11,19 @@ type Props = {
 export default function List(props: Props) {
   const { items, title } = props as Props;
   return (
-    <div className="w-full p-4 lg:w-1/4 sm:w-1/2">
-      <h2 className="mb-4 text-sm font-medium tracking-widest text-center text-gray-900 sm:text-left">
+    <div className="w-full">
+      <h2 className="mt-0 mb-4 text-sm font-medium text-gray-900 dark:text-neutral-50">
         {title}
       </h2>
-      <ul className="flex flex-wrap items-baseline justify-center gap-x-6 gap-y-2 sm:text-left text-center space-y-2.5 sm:justify-start lg:flex-col">
+      <ul className="flex flex-col flex-wrap items-baseline justify-center p-0">
         {items.map((item) => (
           <li className="flex items-center gap-2" key={item.text + title}>
-            {item.svgPath && <RenderSimpleIcon svgPath={item.svgPath} />}
+            {item.svgPath && (
+              <RenderSimpleIcon
+                svgPath={item.svgPath}
+                className="text-lg text-indigo-800 dark:text-indigo-300"
+              />
+            )}
             {item.text}
           </li>
         ))}

@@ -23,6 +23,7 @@ import {
   siLinux,
   SimpleIcon,
   siNetlify,
+  siNextdotjs,
   siNodedotjs,
   siNpm,
   siPostman,
@@ -46,6 +47,7 @@ export const TECH_ICONS: Record<
   | TESTING_AUTOMATION_TECH_LIST,
   SimpleIcon
 > = {
+  [FRONTEND_TECH_LIST.NEXT_JS]: siNextdotjs,
   [FRONTEND_TECH_LIST.REACT]: siReact,
   [FRONTEND_TECH_LIST.TYPESCRIPT]: siTypescript,
   [FRONTEND_TECH_LIST.REACT_ROUTER]: siReactrouter,

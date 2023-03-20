@@ -1,7 +1,6 @@
 import fs from "fs/promises";
 import Navbar from "@/components/navbar/Navbar";
 import { cookies } from "next/headers";
-import path from "path";
 import { readPostContent, readPostsMetadata } from "@/lib/posts.server";
 import MiniSearch from "minisearch";
 import join from "@/lib/join";

@@ -1,4 +1,5 @@
 export enum FRONTEND_TECH_LIST {
+  NEXT_JS = "Next.js",
   REACT = "React",
   TYPESCRIPT = "Typescript",
   REACT_ROUTER = "React-router",
@@ -13,8 +14,6 @@ export enum FRONTEND_TECH_LIST {
   BOOTSTRAP = "Bootstrap",
   STORYBOOK = "Storybook",
   ELECTRON = "Electron",
-  ZUSTAND = "Zustand",
-  NEXT_UI = "Next UI",
   ASTRO = "Astro",
 }
 export enum BACKEND_TECH_LIST {

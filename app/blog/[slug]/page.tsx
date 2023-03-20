@@ -5,7 +5,7 @@ import "../../../styles/themes/base.css";
 import "../../../styles/themes/prism-night-owl.css";
 import "../../../styles/template/plugin-line-numbers.css";
 import LivePreviewLinks from "@/components/markdown/LivePreviewLinks";
-import { readPostContent } from "@/lib/posts.server";
+import { readPost, readPostContent } from "@/lib/posts.server";
 import CustomElement from "@/components/markdown/CustomElements";
 import AutoHighlightedWord from "@/components/AutoHightlightedWord";
 
@@ -16,9 +16,19 @@ function textContentAsID(textContent: string) {
 export default async function Page({ params, searchParams }) {
   const { slug } = params;
   const highlightedWord = searchParams["highlight"];
-  const content = await readPostContent(slug);
+  const { content, title, date, description, tags } = await readPost(slug);
   return (
     <>
+      <h1>{title}</h1>
+      <p>
+        <small>
+          {Intl.DateTimeFormat(undefined, {
+            dateStyle: "long",
+            timeStyle: "long",
+          }).format(new Date(date))}
+        </small>
+      </p>
+
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         //https://github.com/PrismJS/prism-themes

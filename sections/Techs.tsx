@@ -19,17 +19,15 @@ const techsMapper = (
 
 export default function Techs() {
   return (
-    <section className="text-gray-600 body-font bg-secondary">
-      <div className="container px-5 py-24 ">
-        <div className="mb-12 text-center">
-          <H2 id="techs">Stack tecnológico</H2>
-          <p>
-            Tecnologías que uso en el día a día activamente en mi trabajo y en
-            mis side-projects.
-          </p>
-        </div>
-        <div className="flex flex-wrap">
-          <List items={techsMapper(FRONTEND_TECH_LIST)} title="Frontend" />
+    <section className="mt-16">
+      <h2 id="techs">Tech stack</h2>
+      <p>
+        Tecnologías que uso en el día a día activamente en mi trabajo y en mis
+        side-projects.
+      </p>
+      <div className="grid grid-cols-2 gap-4">
+        <List items={techsMapper(FRONTEND_TECH_LIST)} title="Frontend" />
+        <div>
           <List items={techsMapper(TOOLS_TECH_LIST)} title="Herramientas" />
           <List
             items={techsMapper(TESTING_AUTOMATION_TECH_LIST)}

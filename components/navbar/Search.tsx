@@ -48,6 +48,10 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
           <AnimatePresence>
             {isOpen && (
               <motion.input
+                onBlur={() => {
+                  setIsOpen(false);
+                  setResults([]);
+                }}
                 ref={inputRef}
                 onChange={onChange}
                 key="input-hyper-search"
@@ -61,18 +65,17 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
                   width: 0,
                   transition: {
                     type: "keyframes",
-                    duration: 0.5,
+                    duration: 0.3,
                   },
                 }}
                 transition={{
                   type: "spring",
-                  duration: 1,
+                  duration: 0.5,
                 }}
                 onAnimationComplete={(e) => {
                   inputRef.current?.focus();
                 }}
                 type="text"
-                autoFocus={true}
                 className="py-2 bg-transparent rounded-full outline-none"
               />
             )}
@@ -94,7 +97,7 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
                 exit={{
                   opacity: 0,
                 }}
-                className="flex flex-col gap-4 p-4 overflow-auto rounded-xl bg-neutral-800 w-72 h-fit max-h-96"
+                className="flex flex-col overflow-auto border rounded-xl bg-neutral-50 dark:bg-neutral-800 w-72 h-fit max-h-96 border-neutral-200 dark:border-neutral-800"
               >
                 {results.map((pr) => {
                   return (
@@ -104,6 +107,7 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
                         "/blog/" + pr.id + "?highlight=" + pr.terms.join(" ")
                       }
                       key={pr.id}
+                      className="p-4 border-b dark:border-neutral-700 dark:hover:bg-neutral-900 hover:bg-neutral-300"
                     >
                       <h4 className="text-lg font-medium">{pr.title}</h4>
                       <p className="text-neutral-500"> {pr.description}</p>

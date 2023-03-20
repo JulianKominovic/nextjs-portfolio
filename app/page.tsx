@@ -1,8 +1,12 @@
 import ArrowUp from "@/assets/icons/ArrowUp";
 import ExternalLinkArrow from "@/assets/icons/ExternalLink";
 import BlogPost from "@/components/BlogPost";
+import SmallProject from "@/components/SmallProject";
 import { readLastPosts } from "@/lib/posts.server";
 import { CURRENT_JOB_LINK, LINKS } from "@/public/links";
+import { SMALL_PROJECTS } from "@/public/projects";
+import Experience from "@/sections/Experience";
+import Techs from "@/sections/Techs";
 import Image from "next/image";
 import Link from "next/link";
 import ProfilPic from "../assets/images/pic.jpeg";
@@ -35,7 +39,7 @@ export default async function Home() {
             <a
               key={url}
               href={url}
-              className="flex items-center gap-1 [&:hover>svg]:-translate-y-0.5 [&:hover>svg]:translate-x-0.5 [&:hover>svg]:transition-transform [&>svg]:transition-transform"
+              className="flex items-center gap-1 [&:hover>svg]:-translate-y-0.5 [&:hover>svg]:translate-x-0.5 [&:hover>svg]:transition-transform [&>svg]:transition-transform "
             >
               {name}
               <ExternalLinkArrow />
@@ -54,6 +58,21 @@ export default async function Home() {
         I want to see more <span>🧐</span>{" "}
         <ArrowUp className="inline-block rotate-90" />
       </Link>
+      <Techs />
+      <section>
+        <h2 className="" id="small-projects">
+          Proyectos pequeños
+        </h2>
+        <p>
+          Estos son algunos de los proyectos que he hecho en mi tiempo libre, la
+          mayoría fueron discontinuados.
+        </p>
+        <div>
+          {SMALL_PROJECTS.map((project) => {
+            return <SmallProject key={project.title} {...project} />;
+          })}
+        </div>
+      </section>
     </main>
   );
 }
