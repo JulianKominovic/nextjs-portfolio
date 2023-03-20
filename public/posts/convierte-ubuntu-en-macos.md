@@ -6,6 +6,7 @@ tags:
   - ubuntu
   - themes
   - macos
+ogImage: /images/convierte-ubuntu-en-macos/final-result-desktop-2.png
 ---
 
 ## Requisitos previos
@@ -25,7 +26,8 @@ Todo esto manteniendo lo más vanilla posible, para evitar degradar el rendimien
 
 ### Escritorio con aplicaciones
 
-![Resultado final desktop con aplicaciones](/images/convierte-ubuntu-en-macos/final-result-with-apps.png)
+![Resultado final desktop con apps](/images/convierte-ubuntu-en-macos/final-result-with-apps.png)
+![Resultado final desktop con una app maximizada](/images/convierte-ubuntu-en-macos/final-result-maximized-app.png)
 
 Algo importante a destacar son las puntas redondeadas de las ventanas (en adelante **corners**) y los bordes típicos de MacOS.
 
@@ -47,7 +49,7 @@ Tené en cuenta que estoy usando Ubuntu 22.04 y que la barra de tareas es nativa
 ## Paso 2: Activar los tweaks
 
 ```bash
-sudo apt install gnome-tweak-tool
+sudo apt install gnome-tweaks
 ```
 
 En tu cajón de aplicaciones vas a encontrar la aplicación **Tweaks**.
@@ -126,11 +128,7 @@ Te invito a revisar los ajustes de cada una de las extensiones para que puedas p
 
 Luego de estos cambios verás una gran diferencia en el aspecto de tu escritorio.
 
-## Paso 8 (opcional): Cambiar el fondo de pantalla
-
-Este te lo dejo a tu gusto, pero te recomiendo que uses uno de los wallpapers de la última versión de MacOS, Monterey.
-
-## Paso 9 (opcional): Instalar la extension 'Blur my shell'
+## Paso 8: Instalar la extension 'Blur my shell'
 
 Esta extensión no es necesaria para lograr lo que buscamos, pero si te gusta el efecto de blur que tiene el fondo de pantalla de MacOS, te recomiendo que la instales.
 ![Ejemplo de blur my shel](/images/convierte-ubuntu-en-macos/blur-my-shell-example.png)
@@ -139,18 +137,77 @@ En caso de instalarla deberías probar configurarla según tu parecer.
 
 Tiene una configuración bastante simple pero poderosa, hasta quizas logres algo mejor que el efecto de blur de MacOS.
 
-## Paso 10 (opcional): Global menu
+## Paso 9: Global menu
 
 Una de las features que unifica el menú de cada aplicación en el menú de la barra de tareas es la extensión **Fildem Global menu**.
 
-Ahora bien, esta extensión no es compatible de momento con Gnome 42+, por lo que si estás usando Ubuntu 22.04 o superior, no podrás instalarla, **al menos de momento**.
+~Ahora bien, esta extensión no es compatible de momento con Gnome 42+, por lo que si estás usando Ubuntu 22.04 o superior, no podrás instalarla, **al menos de momento**.~
 
-Probá de verificar si cuando estés leyendo esto ya está disponible para Gnome 42+.
+~Probá de verificar si cuando estés leyendo esto ya está disponible para Gnome 42+.~
 
 Esta extensión es bastante útil, ya que te permite tener el menú de cada aplicación en la barra de tareas, lo que hace que el escritorio se vea mucho más limpio.
+
+### Update 20 de marzo de 2023
+
+Conseguí una solución para instalar la extensión en Gnome 43+.
+
+Extension: [Fildem V2](https://github.com/Weather-OS/Fildem-v2)
+
+1. Instalamos las dependencias:
+
+```bash
+sudo apt install libbamf3-dev bamfdaemon libkeybinder-3.0-dev appmenu-gtk2-module appmenu-gtk3-module unity-gtk-module-common python3 python3-pip
+pip3 install setuptools
+```
+
+2. Ejecutamos el script de instalación:
+
+```bash
+cd ~
+git clone https://github.com/Weather-OS/Fildem-v2
+cd Fildem-v2
+sudo python3 setup.py install --optimize=1
+mv ./fildemGMenu@gonza.com ~/.local/share/gnome-shell/extensions
+```
+
+3. Ahora editamos el archivo `.gtkrc-2.0`
+
+```bash
+nano ~/.gtkrc-2.0
+```
+
+y al final de todo agregamos: `gtk-modules="appmenu-gtk-module"`
+
+4. Ahora editamos el archivo `.config/gtk-3.0/settings.ini`
+
+```bash
+nano ~/.config/gtk-3.0/settings.ini
+```
+
+y al final de todo agregamos: `gtk-modules="appmenu-gtk-module"`
+
+5. Reiniciamos el sistema o nos deslogueamos y volvemos a loguear.
+6. Abrimos la aplicación **Extension manager**.
+7. Buscamos **Fildem global menu** y la activamos.
+8. Nos vamos a ajustes de la extensión y desactivamos las unicas dos opciones que hay.
+
+Nos deberia quedar algo como esto:
+![Fildem global menu](/images/convierte-ubuntu-en-macos/fildem-global-menu.png)
+
+## Paso 10 (opcional): Cambiar el fondo de pantalla
+
+Este te lo dejo a tu gusto, pero te recomiendo que uses uno de los wallpapers de la última versión de MacOS, Monterey.
 
 ## Por último
 
 - Va a sonar a cliché pero debes reiniciar tu sistema para que los cambios se terminen de aplicar.
 - Te recomiendo que juegues un poco con las configuraciones de las extensiones que instalamos en el paso 5.
 - En los pasos 3 y 4 hay muchas opciones y variantes que te permiten personalizar el tema y los íconos, te recomiendo que leas la documentación de cada uno de ellos para que puedas personalizarlos a tu gusto.
+
+## Disclaimer
+
+_De más esta decir que no me responsabilizo por posibles bugs, artifacts o imprevistos que surjan en el proceso o en resultado._
+
+_Uso estas modificaciones en mi trabajo y en mi maquina personal, nunca tuve problemas hasta el momento._
+
+_Tené en cuenta que estás modificando el DE (desktop environment) y al hacer esto es probable que surjan inconvenientes. No recomiendo hacer esto en entornos críticos que no deben fallar bajo ninguna circustancia._

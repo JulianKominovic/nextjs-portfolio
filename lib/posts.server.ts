@@ -8,6 +8,7 @@ export type PostMetadata = {
   description: string;
   tags: string[];
   filename: string;
+  ogImage: string;
 };
 
 export async function readLastPosts(): Promise<PostMetadata[]> {
