@@ -39,8 +39,10 @@ export default function BlogList({ posts, allTags }: BlogListProps) {
               <motion.button
                 layout
                 className={join(
-                  "px-2 border rounded-lg hover:bg-neutral-700 border-neutral-800 ",
-                  tags?.includes(tag) ? "bg-black" : "bg-neutral-800"
+                  "px-2 border rounded-lg dark:hover:bg-neutral-700 hover:bg-neutral-300 border-neutral-300 dark:border-neutral-800",
+                  tags?.includes(tag)
+                    ? "bg-neutral-200 dark:bg-black"
+                    : "bg-white dark:bg-neutral-800"
                 )}
                 key={tag}
                 onClick={() => {
