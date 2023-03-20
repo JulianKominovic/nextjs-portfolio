@@ -7,11 +7,15 @@ const DEFAULT_DESCRIPTION =
 export const buildImageUrl = (
   title: string,
   description: string,
-  imageUrl: string
+  imageUrl?: string
 ) => {
   if (process.env.NODE_ENV === "development")
-    return `http://localhost:3000/api/og?title=${title}&description=${description}&imageUrl=${imageUrl}`;
-  return `https://jkominovic.vercel.app/api/og?title=${title}&description=${description}&imageUrl=${imageUrl}`;
+    return `http://localhost:3000/api/og?title=${title}&description=${description}&imageUrl=${
+      imageUrl || ""
+    }`;
+  return `https://jkominovic.vercel.app/api/og?title=${title}&description=${description}&imageUrl=${
+    imageUrl || ""
+  }`;
 };
 
 export const COMMON_METADATA: Metadata = {
