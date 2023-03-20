@@ -69,7 +69,7 @@ export function GET(req: NextRequest) {
               style={{
                 fontSize: 24,
                 fontWeight: 300,
-                color: "#444",
+                color: "#555",
                 fontStyle: "normal",
                 letterSpacing: "-0.025em",
                 marginTop: 30,
