@@ -2,20 +2,25 @@
 import React from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import clsx from "clsx";
+
 const list = {
-  hover: { height: "100%", width: "100%" },
-  // initial: { scale: 1, height: 150, width: "100%" },
+  hover: { height: "100%", width: "100%", scale: 1 },
   initial: { scale: 0 },
   animate: { scale: 1 },
 };
 
 const item = {
-  hover: { scale: 1 },
-  initial: { scale: 0 },
-  // initial: { scale: 1 },
+  initial: { opacity: 0, scaleY: 0, y: "200%" },
+  hover: { opacity: 1, scaleY: 1, y: 0 },
 };
 
-const bar = {};
+const bar = {
+  initial: {
+    top: "-100%",
+  },
+  animate: { top: 0 },
+  hover: { top: "-100%" },
+};
 const annex = {
   initial: { left: 0, scaleX: 0 },
   animate: { left: "calc(100% + 16px)", scaleX: 1 },
@@ -23,7 +28,7 @@ const annex = {
 };
 const onlyShowWhenExpanded = {
   initial: { scale: 0, width: 0, display: "none" },
-  hover: { scale: 1, width: "fit-content", display: "block" },
+  hover: { scale: 1, width: "fit-content" },
 };
 
 const Root = ({
@@ -33,35 +38,33 @@ const Root = ({
   children: React.ReactNode;
   open?: boolean;
 }) => {
-  const list = {
-    hover: { height: "100%", width: "100%" },
-    // initial: { scale: 1, height: 150, width: "100%" },
-    initial: { scale: 0 },
-    animate: { scale: 1 },
-  };
-  if (open) {
-    list.animate["height"] = "100%";
-    list.animate["width"] = "100%";
-  }
-
   return (
     <motion.div
-      initial={open ? "hover" : "initial"}
-      animate="animate"
+      initial="initial"
+      animate={open ? "hover" : "animate"}
       whileHover="hover"
+      exit="exit"
       variants={list}
       transition={{
+        // type: "spring",
+        // stiffness: 100,
+        // bounce: 0.05,
+        // mass: 0.5,
+        // velocity: 2,
+        // type: "tween",
+
         type: "spring",
-        stiffness: 100,
-        bounce: 0.05,
-        mass: 0.5,
-        velocity: 2,
+        stiffness: 300,
+        damping: 40,
+        mass: 1,
+        // bounce: 0.05,
+        // mass: 0.5,
+        // velocity: 2,
+        // type: "tween",
       }}
-      className="w-40 h-8 mx-auto overflow-hidden bg-black rounded-3xl"
+      className="relative w-40 h-8 mx-auto overflow-hidden bg-black rounded-3xl"
     >
       {children}
-
-      {/* {annexChildren} */}
     </motion.div>
   );
 };
@@ -72,12 +75,12 @@ const Bar = ({ children, ...rest }: HTMLMotionProps<"div">) => {
       variants={bar}
       {...rest}
       className={clsx(
-        "flex items-center justify-start w-full h-8 p-4 origin-top select-none",
+        "flex items-center justify-start w-full h-8 p-4 origin-top select-none absolute left-0 top-0 z-10",
         rest.className
       )}
       transition={
         {
-          velocity: 4,
+          velocity: 1,
           ...rest.transition,
         } as any
       }
@@ -87,14 +90,18 @@ const Bar = ({ children, ...rest }: HTMLMotionProps<"div">) => {
   );
 };
 
-const Body = ({ children }) => {
+const Body = ({ children, ...rest }: HTMLMotionProps<"main">) => {
   return (
     <motion.main
-      className="w-full h-40 px-4 py-2"
       variants={item}
-      transition={{
-        velocity: 4,
-      }}
+      {...rest}
+      transition={
+        {
+          velocity: 1,
+          ...rest.transition,
+        } as any
+      }
+      className={clsx("w-full h-full px-4 py-2", rest.className)}
     >
       {children}
     </motion.main>
@@ -111,7 +118,7 @@ const OnlyShowWhenExpanded = ({
       {...rest}
       transition={
         {
-          velocity: 4,
+          velocity: 1,
           ...rest.transition,
         } as any
       }

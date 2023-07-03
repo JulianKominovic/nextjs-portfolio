@@ -10,14 +10,7 @@ export default function DylanPage({}) {
       <p className="text-sm text-neutral-400">
         Dynamic island by Julian Kominovic
       </p>
-      <ul className="list-none">
-        <li>
-          <DynamicIslandNotificationExample />
-        </li>
-        <li>
-          <DynamicIslandDemo />
-        </li>
-      </ul>
+      <DynamicIslandDemo />
     </main>
   );
 }
