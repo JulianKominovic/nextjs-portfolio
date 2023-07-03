@@ -49,18 +49,18 @@
 /* ===== Scrollbar CSS ===== */
 
 :root.dark .bg-texture {
-  background-color: rgba(23, 23, 23, 1);
+  background-color: rgba(33, 33, 33, 1);
   opacity: 1;
   background-image: linear-gradient(
-      rgba(33, 33, 33, 0.2) 1.8px,
+      rgba(43, 43, 43, 0.2) 1.8px,
       transparent 1.8px
     ),
-    linear-gradient(90deg, rgba(33, 33, 33, 0.2) 1.8px, transparent 1.8px),
-    linear-gradient(rgba(33, 33, 33, 0.2) 0.9px, transparent 0.9px),
+    linear-gradient(90deg, rgba(43, 43, 43, 0.2) 1.8px, transparent 1.8px),
+    linear-gradient(rgba(43, 43, 43, 0.2) 0.9px, transparent 0.9px),
     linear-gradient(
       90deg,
-      rgba(33, 33, 33, 0.2) 0.9px,
-      rgba(33, 33, 33, 0) 0.9px
+      rgba(43, 43, 43, 0.2) 0.9px,
+      rgba(43, 43, 43, 0) 0.9px
     );
   background-size: 45px 45px, 45px 45px, 9px 9px, 9px 9px;
   background-position: -1.8px -1.8px, -1.8px -1.8px, -0.9px -0.9px,

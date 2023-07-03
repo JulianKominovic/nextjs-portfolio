@@ -41,7 +41,9 @@ export default function Searchbar({ indexes, setIsOpen, isOpen }) {
           <CommonButton
             key={"fire-hyper-search"}
             onClick={() => setIsOpen(!isOpen)}
-            className={join("m-0 flex items-center !w-10")}
+            className={
+              "m-0 flex items-center !w-10 dark:text-white text-neutral-900"
+            }
           >
             {isOpen ? "x" : <SearchIcon />}
           </CommonButton>

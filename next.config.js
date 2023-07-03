@@ -7,11 +7,17 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    minimumCacheTTL: 60 * 60 * 24, // 24 hs
+    minimumCacheTTL: 60 * 60 * 24 * 7 * 365, // 365 days
     remotePatterns: [
       {
         protocol: "https",
         hostname: "**",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
         port: "",
         pathname: "**",
       },

@@ -47,13 +47,13 @@ export default function LiveProgress() {
         >
           <motion.div
             animate={{ width: scrolled } as any}
-            className="h-1 rounded-full bg-gradient-to-r from-neutral-400 to-neutral-800 dark:from-neutral-800 dark:to-neutral-400"
+            className="h-1 rounded-full bg-neutral-700 dark:bg-neutral-400"
           ></motion.div>
           <AnimatePresence>
             {scrolling ? (
               <motion.div
                 key="text-scrolled"
-                className="origin-left"
+                className="mr-3 origin-left"
                 initial={{ width: 0, scaleX: 0 }}
                 animate={{ width: 34, scaleX: 1 }}
                 exit={{ width: 0, scaleX: 0 }}

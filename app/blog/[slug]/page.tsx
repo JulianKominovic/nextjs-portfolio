@@ -9,7 +9,7 @@ import { readPost, readPostContent } from "@/lib/posts.server";
 import CustomElement from "@/components/markdown/CustomElements";
 import AutoHighlightedWord from "@/components/AutoHightlightedWord";
 import Image from "next/image";
-import { buildImageUrl, COMMON_METADATA } from "@/public/metadata";
+import { COMMON_METADATA } from "@/public/metadata";
 import { Metadata } from "next";
 
 function textContentAsID(textContent: string) {
@@ -18,9 +18,7 @@ function textContentAsID(textContent: string) {
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { slug } = params;
-  const { title, description, ogImage } = await readPost(slug);
-  console.log(buildImageUrl(title, description, ogImage));
-
+  const { title, description, filename } = await readPost(slug);
   return {
     ...COMMON_METADATA,
     title,
@@ -29,7 +27,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       ...COMMON_METADATA.openGraph,
       title,
       description,
-      images: [{ url: buildImageUrl(title, description, ogImage) }],
+      images: [{ url: "/images/" + filename + "/og.png" }],
     },
   };
 }
@@ -37,9 +35,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 export default async function Page({ params, searchParams }) {
   const { slug } = params;
   const highlightedWord = searchParams["highlight"];
-  const { content, title, date, description, tags, ogImage } = await readPost(
-    slug
-  );
+  const { content, title, date } = await readPost(slug);
   return (
     <>
       <h1>{title}</h1>
@@ -63,9 +59,9 @@ export default async function Page({ params, searchParams }) {
             <a href={props.src} target="_blank">
               <Image
                 {...props}
-                width={600}
+                width={800}
                 height={400}
-                className="relative transition-transform rounded-md cursor-pointer hover:scale-105 hover:transition-transform "
+                className="relative w-full transition-transform rounded-md cursor-pointer hover:scale-105 hover:transition-transform"
               />
             </a>
           ),

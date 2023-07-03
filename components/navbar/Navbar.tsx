@@ -13,7 +13,7 @@ export default function Navbar({ indexes, initialTheme }) {
 
   return (
     <motion.nav className="z-50 fixed w-[100vw] prose dark:prose-invert -translate-x-1/2 top-2 sm:top-4 left-1/2">
-      <ul className="flex gap-4 px-4 py-1 mx-auto overflow-hidden list-none bg-white bg-opacity-50 border rounded-full w-80 sm:mx-auto dark:bg-opacity-50 dark:bg-neutral-900 justify-evenly backdrop-blur-md dark:border-neutral-800">
+      <ul className="flex gap-4 px-4 py-1 mx-auto overflow-hidden list-none bg-white bg-opacity-50 border-none rounded-full w-80 sm:mx-auto dark:bg-opacity-50 dark:bg-neutral-900 justify-evenly backdrop-blur-lg backdrop-saturate-200">
         <AnimatePresence key="items-layout">
           {!searchIsOpen && (
             <motion.li className="p-0 m-0" key="home-opt">

@@ -47,7 +47,7 @@ export default async function Home() {
           ))}
         </div>
       </header>
-      <section className="flex flex-col">
+      <section className="flex flex-col mb-4">
         <h2>Blog</h2>
         {posts.map(BlogPost)}
       </section>
