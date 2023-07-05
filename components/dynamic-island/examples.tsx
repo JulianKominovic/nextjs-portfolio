@@ -34,6 +34,8 @@ const RenderDemo = ({ demo, open }) => {
       return <DynamicIslandMusicExample open={open} />;
     case "call":
       return <DynamicIslandCallExample open={open} />;
+    case "chat":
+      return <DynamicIslandChatExample open={open} />;
     default:
       return <DynamicIslandNotificationExample open={open} />;
   }
@@ -246,5 +248,76 @@ export const DynamicIslandCallExample = ({ open }) => {
         Toggle call state ({callState})
       </button>
     </>
+  );
+};
+
+export const DynamicIslandChatExample = ({ open }) => {
+  const messages = [
+    "Hi!",
+    "Did you hear about the new Tesla?",
+    "It's amazing!",
+    "I'm going to buy it!",
+    "I'm so excited!",
+    "Hurts 30k, but it's worth it!",
+  ];
+  const [messageIdx, setMessageIdx] = useState(0);
+  const [state, setState] = useState<"idle" | "incomming-message">(
+    "incomming-message"
+  );
+  const [pause, setPause] = useState(false);
+  const currentMessage = messages[messageIdx];
+
+  useEffect(() => {
+    const intervalShowId = setInterval(() => {
+      setState("idle");
+    }, 3000);
+
+    const intervalId = setInterval(() => {
+      setState("incomming-message");
+      setMessageIdx((prev) => (prev + 1 >= messages.length ? 0 : prev + 1));
+    }, 6000);
+
+    if (pause) {
+      clearInterval(intervalId);
+      clearInterval(intervalShowId);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+      clearInterval(intervalShowId);
+    };
+  }, [messages.length, pause]);
+
+  return (
+    <DynamicIsland.Root
+      open={open}
+      barHeight={state === "incomming-message" ? "large" : "normal"}
+      barWidth={state === "incomming-message" ? "large" : "normal"}
+      onHoverStart={() => setPause(true)}
+      onHoverEnd={() => setPause(false)}
+    >
+      <DynamicIsland.Bar>
+        {state === "incomming-message" && (
+          <DynamicIsland.Animated className="flex items-center">
+            <Image
+              src="/images/dynamic-island/elon-musk-profile.jpg"
+              alt="Elon Musk"
+              className="rounded-full"
+              width={40}
+              height={40}
+            />
+            <div className="inline-block">
+              <small className="m-0 text-neutral-300">Elon musk</small>
+              <h3 className="m-0 text-sm font-semibold text-white truncate">
+                {currentMessage}
+              </h3>
+            </div>
+          </DynamicIsland.Animated>
+        )}
+      </DynamicIsland.Bar>
+      <DynamicIsland.Body>
+        <p>{currentMessage}</p>
+      </DynamicIsland.Body>
+    </DynamicIsland.Root>
   );
 };

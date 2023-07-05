@@ -36,8 +36,8 @@ const onlyShowWhenExpanded = {
 };
 
 const DynamicIslandContext = React.createContext<{
-  barHeight: "normal" | "large";
-  barWidth: "normal" | "full" | "large";
+  barHeight: SizesType;
+  barWidth: SizesType;
   open?: boolean;
   id: string;
 }>({
@@ -47,16 +47,6 @@ const DynamicIslandContext = React.createContext<{
   id: "",
 });
 
-const calculateHeightBybarHeight = (barHeight: "normal" | "large") => {
-  if (barHeight === "normal") return "h-8";
-  return "h-14";
-};
-const calculateHeightBybarWidth = (barWidth: "normal" | "full" | "large") => {
-  if (barWidth === "normal") return "w-40";
-  if (barWidth === "large") return "w-72";
-  return "w-full";
-};
-
 const DynamicIslandProvider = ({ children, barHeight, open, barWidth, id }) => {
   return (
     <DynamicIslandContext.Provider value={{ barHeight, open, barWidth, id }}>
@@ -65,26 +55,55 @@ const DynamicIslandProvider = ({ children, barHeight, open, barWidth, id }) => {
   );
 };
 
+type SizesType = "normal" | "large" | "full";
+
 type RootProps = {
   children: React.ReactNode;
   open?: boolean;
   freezed?: boolean;
-  barHeight?: "normal" | "large";
-  barWidth?: "normal" | "full" | "large";
+  barHeight?: SizesType;
+  barWidth?: SizesType;
 };
 
 const GLOBAL_DELAY = 0.05;
-
+const height: Record<SizesType, string> = {
+  normal: "h-8",
+  large: "h-14",
+  full: "h-full",
+};
+const width: Record<SizesType, string> = {
+  normal: "w-40",
+  large: "w-72",
+  full: "w-full",
+};
 const Root = ({
   children,
   open,
   freezed,
   barHeight = "normal",
   barWidth = "normal",
-}: RootProps) => {
+  onBlur,
+  onFocus,
+  onHoverEnd,
+  onHoverStart,
+  onTap,
+  onTapCancel,
+  onTapStart,
+}: RootProps &
+  Pick<
+    HTMLMotionProps<"div">,
+    | "onHoverStart"
+    | "onHoverEnd"
+    | "onTap"
+    | "onTapCancel"
+    | "onTapStart"
+    | "onFocus"
+    | "onBlur"
+  >) => {
   const [state, setState] = useState<"hovering" | "double-tap">("hovering");
   const id = useId();
   const isDesktop = useMobileDetect().isDesktop();
+
   return (
     <DynamicIslandProvider
       id={id}
@@ -98,13 +117,27 @@ const Root = ({
         whileHover={
           freezed || open ? "none" : state === "hovering" ? "hover" : "none"
         }
-        layoutId={id}
         exit="exit"
         variants={list}
-        onHoverStart={() => !freezed && isDesktop && setState("hovering")}
-        onTap={() => !freezed && setState("double-tap")}
-        onBlur={() => !freezed && setState("hovering")}
-        onFocus={() => !freezed && setState("double-tap")}
+        onHoverEnd={onHoverEnd}
+        onTapCancel={onTapCancel}
+        onTapStart={onTapStart}
+        onHoverStart={(e, info) => {
+          onHoverStart?.(e, info);
+          !freezed && isDesktop && setState("hovering");
+        }}
+        onTap={(e, info) => {
+          onTap?.(e, info);
+          !freezed && setState("double-tap");
+        }}
+        onBlur={(e) => {
+          onBlur?.(e);
+          !freezed && setState("hovering");
+        }}
+        onFocus={(e) => {
+          onFocus?.(e);
+          !freezed && setState("double-tap");
+        }}
         role="menubar"
         tabIndex={0}
         transition={{
@@ -116,10 +149,9 @@ const Root = ({
         }}
         className={clsx(
           "relative mx-auto overflow-hidden bg-black rounded-3xl focus:outline focus:outline-1 focus:outline-offset-4 focus:outline-current",
-          calculateHeightBybarHeight(barHeight),
-          calculateHeightBybarWidth(barWidth)
+          height[barHeight],
+          width[barWidth]
         )}
-        layout
       >
         {children}
       </motion.div>
@@ -134,9 +166,9 @@ const Bar = ({ children, ...rest }: HTMLMotionProps<"div">) => {
       variants={bar}
       {...rest}
       className={clsx(
-        "flex items-center justify-start w-full origin-top select-none absolute left-0 top-0 z-10",
+        "flex items-center justify-start w-full origin-top select-none absolute left-0 top-0 z-10 px-4",
         rest.className,
-        calculateHeightBybarHeight(barHeight)
+        height[barHeight]
       )}
       transition={
         {
@@ -218,7 +250,7 @@ const Animated = (props: HTMLMotionProps<"div">) => (
     {...(props as any)}
     className={clsx("w-full h-full", props.className)}
     initial={{
-      y: "100%",
+      y: "-100%",
       opacity: 1,
     }}
     animate={{
@@ -229,6 +261,7 @@ const Animated = (props: HTMLMotionProps<"div">) => (
       y: "100%",
       opacity: 0,
     }}
+    layout
   />
 );
 
