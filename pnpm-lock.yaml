@@ -42,6 +42,7 @@ specifiers:
   react-code-blocks: 0.0.9-0
   react-dom: 18.2.0
   react-grid-layout: 1.3.4
+  react-icons: ^4.10.1
   react-markdown: 8.0.5
   react-masonry-component: 6.3.0
   react-rough-notation: 1.0.3
@@ -64,6 +65,7 @@ specifiers:
   tailwindcss: 3.2.7
   tailwindcss-container-query: 1.1.0
   typescript: 4.9.5
+  use-mobile-detect-hook: ^1.0.5
 
 dependencies:
   '@mapbox/rehype-prism': 0.8.0
@@ -100,6 +102,7 @@ dependencies:
   react-code-blocks: 0.0.9-0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-grid-layout: 1.3.4_biqbaboplfbrettd7655fr4n2y
+  react-icons: 4.10.1_react@18.2.0
   react-markdown: 8.0.5_pmekkgnqduwlme35zpnqhenc34
   react-masonry-component: 6.3.0_react@18.2.0
   react-rough-notation: 1.0.3_biqbaboplfbrettd7655fr4n2y
@@ -121,6 +124,7 @@ dependencies:
   simple-icons: 8.6.0
   tailwindcss-container-query: 1.1.0_tailwindcss@3.2.7
   typescript: 4.9.5
+  use-mobile-detect-hook: 1.0.5_react@18.2.0
 
 devDependencies:
   '@types/elasticlunr': 0.9.5
@@ -5837,6 +5841,14 @@ packages:
       react-resizable: 3.0.4_biqbaboplfbrettd7655fr4n2y
     dev: false
 
+  /react-icons/4.10.1_react@18.2.0:
+    resolution: {integrity: sha512-/ngzDP/77tlCfqthiiGNZeYFACw85fUjZtLbedmJ5DTlNDIwETxhwBzdOJ21zj4iJdvc0J3y7yOsX3PpxAJzrw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: false
@@ -7490,6 +7502,15 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.0.28
+      react: 18.2.0
+    dev: false
+
+  /use-mobile-detect-hook/1.0.5_react@18.2.0:
+    resolution: {integrity: sha512-8Uu69l2DTsPahD+j+ZefzV3IRHWcN2vbQmdlTshTnoHIS8MDvgr2IC3dgaNNpPCUbr8EhKH06c0KB3ViYNSnAQ==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: ^16.7.0-alpha.0
+    dependencies:
       react: 18.2.0
     dev: false
 

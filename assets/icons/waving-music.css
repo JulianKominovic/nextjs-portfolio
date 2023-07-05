@@ -1,0 +1,43 @@
+.wave-line {
+  display: block;
+  position: relative;
+  background-color: #f1f1f1;
+  height: 100%;
+  width: 2px;
+  border-radius: 10px;
+
+  animation: animate 1.2s linear infinite;
+}
+
+@keyframes animate {
+  50% {
+    height: 20%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+.wave-line:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.wave-line:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.wave-line:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.wave-line:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+.wave-line:nth-child(5) {
+  animation-delay: 1s;
+}
+
+.wave-line:nth-child(6) {
+  animation-delay: 1.2s;
+}
