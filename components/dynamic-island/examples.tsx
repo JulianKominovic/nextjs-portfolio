@@ -26,8 +26,9 @@ type DemoTypes =
   | "call"
   | "chat"
   | "alert"
-  | "status";
-const RenderDemo = ({ demo, open }) => {
+  | "status"
+  | "custom-styles";
+const RenderDemo = ({ demo, open }: { demo: DemoTypes; open: boolean }) => {
   switch (demo) {
     case "notification":
       return <DynamicIslandNotificationExample open={open} />;
@@ -37,6 +38,8 @@ const RenderDemo = ({ demo, open }) => {
       return <DynamicIslandCallExample open={open} />;
     case "chat":
       return <DynamicIslandChatExample open={open} />;
+    case "custom-styles":
+      return <DynamicIslandCustomStylesExample open={open} />;
     default:
       return <DynamicIslandNotificationExample open={open} />;
   }
@@ -52,19 +55,25 @@ export const DynamicIslandDemo = () => {
         <RenderDemo demo={demo} open={open} />
       </section>
       <footer className="flex flex-wrap items-center gap-4 my-4">
-        {["notification", "music", "call", "chat", "alert", "status"].map(
-          (demo) => (
-            <button
-              key={demo}
-              className="px-4 py-3 rounded-lg text-neutral-800 bg-neutral-200"
-              onClick={() => {
-                setDemo(demo as DemoTypes);
-              }}
-            >
-              {demo}
-            </button>
-          )
-        )}
+        {[
+          "notification",
+          "music",
+          "call",
+          "chat",
+          "alert",
+          "status",
+          "custom-styles",
+        ].map((demo) => (
+          <button
+            key={demo}
+            className="px-4 py-3 rounded-lg text-neutral-800 bg-neutral-200"
+            onClick={() => {
+              setDemo(demo as DemoTypes);
+            }}
+          >
+            {demo}
+          </button>
+        ))}
         <button
           className="px-4 py-3 rounded-lg text-neutral-800 bg-neutral-200"
           onClick={() => {
@@ -207,7 +216,7 @@ export const DynamicIslandCallExample = ({ open }) => {
               />
               <div className="inline-block">
                 <small className="m-0 text-neutral-300">Discord</small>
-                <h3 className="m-0 text-sm font-semibold text-white">
+                <h3 className="m-0 text-sm font-semibold text-white whitespace-nowrap">
                   Elon Musk
                 </h3>
               </div>
@@ -224,7 +233,7 @@ export const DynamicIslandCallExample = ({ open }) => {
               </div>
             </DynamicIsland.Animated>
           ) : (
-            <DynamicIsland.Animated className="flex items-center justify-between w-full gap-4 px-4 text-sm">
+            <DynamicIsland.Animated className="flex items-center justify-between w-full gap-4 text-sm">
               <div className="flex items-center h-full gap-2">
                 <BsTelephoneFill className="text-green-400" />
                 <p className="text-green-400">
@@ -351,6 +360,18 @@ export const DynamicIslandChatExample = ({ open }) => {
           </button>
         </footer>
       </DynamicIsland.Body>
+    </DynamicIsland.Root>
+  );
+};
+
+export const DynamicIslandCustomStylesExample = ({ open }) => {
+  return (
+    <DynamicIsland.Root
+      className="bg-blue-100 border rounded-md shadow-xl shadow-slate-300"
+      open={open}
+    >
+      <DynamicIsland.Bar></DynamicIsland.Bar>
+      <DynamicIsland.Body></DynamicIsland.Body>
     </DynamicIsland.Root>
   );
 };

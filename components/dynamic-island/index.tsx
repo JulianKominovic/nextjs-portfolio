@@ -7,33 +7,36 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  HTMLMotionProps,
+  motion,
+  useAnimation,
+  usePresence,
+} from "framer-motion";
 import clsx from "clsx";
 import useMobileDetect from "use-mobile-detect-hook";
 
-const item = {
-  initial: { opacity: 0, scaleY: 0, y: "200%" },
-  hover: { opacity: 1, scaleY: 1, y: 0 },
+type AnimationVariants = "open" | "initial" | "exit" | "idle";
+
+const item: Record<AnimationVariants, any> = {
+  initial: { opacity: 0, scaleY: 0, y: "200%", filter: "blur(6px)" },
+  idle: { opacity: 0, scaleY: 0, y: "200%", filter: "blur(6px)" },
+  open: { opacity: 1, scaleY: 1, y: 0, filter: "blur(0)" },
+  exit: { opacity: 0, scaleY: 0, y: "200%", filter: "blur(6px)" },
 };
 
-const bar = {
+const bar: Record<AnimationVariants, any> = {
   initial: {
     top: "-100%",
+    filter: "blur(6px)",
   },
-  animate: { top: 0 },
-  hover: { top: "-100%" },
+  idle: { top: 0, filter: "blur(0)" },
+  open: { top: "-100%", filter: "blur(6px)" },
   exit: {
     top: "100%",
+    filter: "blur(6px)",
   },
-};
-// const annex = {
-//   initial: { left: 0, scaleX: 0 },
-//   animate: { left: "calc(100% + 16px)", scaleX: 1 },
-//   hover: { opacity: 0, display: "none" },
-// };
-const onlyShowWhenExpanded = {
-  initial: { scale: 0, width: 0, display: "none" },
-  hover: { scale: 1, width: "fit-content" },
 };
 
 const DynamicIslandContext = React.createContext<{
@@ -64,6 +67,7 @@ type RootProps = {
   freezed?: boolean;
   barHeight?: SizesType;
   barWidth?: SizesType;
+  className?: string;
 };
 
 const GLOBAL_DELAY = 0.05;
@@ -101,6 +105,7 @@ const Root = ({
   onTap,
   onTapCancel,
   onTapStart,
+  className,
 }: RootProps &
   Pick<
     HTMLMotionProps<"div">,
@@ -112,18 +117,34 @@ const Root = ({
     | "onFocus"
     | "onBlur"
   >) => {
-  const [state, setState] = useState<"hovering" | "double-tap">("hovering");
+  const controls = useAnimation();
   const id = useId();
   const isDesktop = useMobileDetect().isDesktop();
+  useEffect(() => {
+    controls.start("idle" as AnimationVariants);
+  }, [controls]);
 
-  const list = {
-    hover: {
+  useEffect(() => {
+    controls.stop();
+    controls.start("idle" as AnimationVariants);
+  }, [barHeight, barWidth]);
+
+  useEffect(() => {
+    if (open === undefined) return;
+    open
+      ? controls.start("open" as AnimationVariants)
+      : controls.start("idle" as AnimationVariants);
+  }, [open, controls]);
+
+  const list: Record<AnimationVariants, any> = {
+    open: {
       height: "100%",
       width: "100%",
       scale: 1,
     },
     initial: { scale: 0 },
-    animate: {
+    exit: { scale: 0 },
+    idle: {
       height: heightInPx[barHeight],
       width: widthInPx[barWidth],
       scale: 1,
@@ -137,37 +158,40 @@ const Root = ({
       barWidth={barWidth}
     >
       <motion.div
-        initial="initial"
-        animate={open || state === "double-tap" ? "hover" : "animate"}
-        whileHover={
-          freezed || open ? "none" : state === "hovering" ? "hover" : "none"
-        }
-        exit="exit"
+        animate={controls}
         variants={list}
-        onHoverEnd={onHoverEnd}
+        initial="initial"
+        exit="exit"
         onTapCancel={onTapCancel}
         onTapStart={onTapStart}
         onHoverStart={(e, info) => {
-          console.log("HOVER START");
-
           onHoverStart?.(e, info);
-          !freezed && isDesktop && setState("hovering");
+          if (freezed) return;
+          if (!isDesktop) return;
+          controls.start("open" as AnimationVariants);
+        }}
+        onHoverEnd={(e, info) => {
+          onHoverEnd?.(e, info);
+          if (freezed) return;
+          if (!isDesktop) return;
+          controls.start("idle" as AnimationVariants);
         }}
         onTap={(e, info) => {
-          console.log("TAP");
-
           onTap?.(e, info);
-          !freezed && setState("double-tap");
-        }}
-        onBlur={(e) => {
-          console.log("BLUR");
-          onBlur?.(e);
-          !freezed && setState("hovering");
+          if (freezed) return;
+          if (isDesktop) return;
+          controls.start("open" as AnimationVariants);
         }}
         onFocus={(e) => {
-          console.log("FOCUS");
           onFocus?.(e);
-          !freezed && setState("double-tap");
+          if (freezed) return;
+          if (!isDesktop) return;
+          controls.start("open" as AnimationVariants);
+        }}
+        onBlur={(e) => {
+          onBlur?.(e);
+          if (freezed) return;
+          controls.start("idle" as AnimationVariants);
         }}
         role="menubar"
         tabIndex={0}
@@ -178,13 +202,12 @@ const Root = ({
           mass: 1,
           delay: GLOBAL_DELAY,
         }}
-        className={clsx(
-          "relative mx-auto overflow-hidden bg-black rounded-3xl focus:outline focus:outline-1 focus:outline-offset-4 focus:outline-current",
-          height[barHeight],
-          width[barWidth]
-        )}
         layout
         layoutId={id}
+        className={clsx(
+          "relative mx-auto overflow-hidden bg-black rounded-3xl focus:outline focus:outline-1 focus:outline-offset-4 focus:outline-current",
+          className
+        )}
       >
         {children}
       </motion.div>
@@ -217,17 +240,6 @@ const Bar = ({ children, ...rest }: HTMLMotionProps<"div">) => {
 };
 
 const Body = ({ children, ...rest }: HTMLMotionProps<"main">) => {
-  const child = React.Children.toArray(children as any).map((child, index) => {
-    return React.cloneElement(child as any, {
-      onClick: (e) => e.stopPropagation(),
-      onPointerDownCapture: (e) => {
-        e.stopPropagation();
-      },
-      onFocusCapture: (e) => {
-        e.stopPropagation();
-      },
-    });
-  });
   return (
     <motion.main
       variants={item}
@@ -242,68 +254,15 @@ const Body = ({ children, ...rest }: HTMLMotionProps<"main">) => {
       }
       className={clsx("w-full h-full p-4", rest.className)}
     >
-      {child}
+      {children}
     </motion.main>
   );
 };
-
-const OnlyShowWhenExpanded = ({
-  children,
-  ...rest
-}: HTMLMotionProps<"div">) => {
-  return (
-    <motion.div
-      variants={onlyShowWhenExpanded}
-      {...rest}
-      transition={
-        {
-          velocity: 1,
-          ...rest.transition,
-        } as any
-      }
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// const Annex = ({ children, ...rest }: HTMLMotionProps<"div">) => {
-//   return (
-//     <motion.div
-//       variants={annex}
-//       {...rest}
-//       className={clsx(
-//         "h-8 overflow-hidden bg-black rounded-3xl absolute origin-left top-0 min-w-[60px] select-none pointer-events-none ",
-//         rest.className
-//       )}
-//       transition={
-//         {
-//           velocity: 4,
-//           ...rest.transition,
-//         } as any
-//       }
-//     >
-//       {children}
-//     </motion.div>
-//   );
-// };
-// Annex.displayName = "Annex";
 
 const Animated = (props: HTMLMotionProps<"div">) => (
   <motion.div
     {...(props as any)}
     className={clsx("w-full h-full", props.className)}
-    initial={{
-      opacity: 0,
-    }}
-    animate={{
-      y: 0,
-      opacity: 1,
-    }}
-    exit={{
-      y: "100%",
-      opacity: 0,
-    }}
     layout
   />
 );
@@ -312,9 +271,7 @@ const parts = {
   Root,
   Body,
   Bar,
-  OnlyShowWhenExpanded,
   Animated,
-  //   Annex,
 };
 
 export default parts;
