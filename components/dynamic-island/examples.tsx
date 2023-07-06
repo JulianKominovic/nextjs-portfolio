@@ -11,6 +11,7 @@ import {
   BsShuffle,
   BsPhoneFill,
   BsTelephoneFill,
+  BsSendFill,
 } from "react-icons/bs";
 import { useEffect, useRef, useState } from "react";
 import { siGithub } from "simple-icons";
@@ -47,7 +48,7 @@ export const DynamicIslandDemo = () => {
 
   return (
     <>
-      <section className="max-w-md p-4 mx-auto rounded-lg h-44 bg-slate-100">
+      <section className="h-48 max-w-md p-4 mx-auto rounded-lg bg-slate-100">
         <RenderDemo demo={demo} open={open} />
       </section>
       <footer className="flex flex-wrap items-center gap-4 my-4">
@@ -86,8 +87,11 @@ export const DynamicIslandNotificationExample = ({ open }) => {
           1
         </div>
       </DynamicIsland.Bar>
-      <DynamicIsland.Body className="flex items-center gap-4">
-        <RenderSimpleIcon svgPath={siGithub.path} className="text-4xl" />
+      <DynamicIsland.Body className="flex items-start gap-4">
+        <RenderSimpleIcon
+          svgPath={siGithub.path}
+          className="text-4xl text-white"
+        />
 
         <aside className="flex flex-col justify-between w-full h-full py-1">
           <div className="flex flex-col">
@@ -253,8 +257,9 @@ export const DynamicIslandCallExample = ({ open }) => {
 
 export const DynamicIslandChatExample = ({ open }) => {
   const messages = [
-    "Hi!",
+    "Just stop wasting your time and buy it! It's worth it! I promise! I'm not Elon Musk, but I'm sure it's worth it!",
     "Did you hear about the new Tesla?",
+    "Hi!",
     "It's amazing!",
     "I'm going to buy it!",
     "I'm so excited!",
@@ -298,7 +303,7 @@ export const DynamicIslandChatExample = ({ open }) => {
     >
       <DynamicIsland.Bar>
         {state === "incomming-message" && (
-          <DynamicIsland.Animated className="flex items-center">
+          <DynamicIsland.Animated className="flex items-center gap-4">
             <Image
               src="/images/dynamic-island/elon-musk-profile.jpg"
               alt="Elon Musk"
@@ -306,8 +311,10 @@ export const DynamicIslandChatExample = ({ open }) => {
               width={40}
               height={40}
             />
-            <div className="inline-block">
-              <small className="m-0 text-neutral-300">Elon musk</small>
+            <div className="flex flex-col w-full truncate">
+              <small className="m-0 text-xs leading-none text-neutral-300">
+                Elon musk
+              </small>
               <h3 className="m-0 text-sm font-semibold text-white truncate">
                 {currentMessage}
               </h3>
@@ -315,8 +322,34 @@ export const DynamicIslandChatExample = ({ open }) => {
           </DynamicIsland.Animated>
         )}
       </DynamicIsland.Bar>
-      <DynamicIsland.Body>
-        <p>{currentMessage}</p>
+      <DynamicIsland.Body className="flex flex-col h-full">
+        <div className="flex items-start flex-grow w-full gap-4 overflow-hidden">
+          <Image
+            src="/images/dynamic-island/elon-musk-profile.jpg"
+            alt="Elon Musk"
+            className="m-0 rounded-full"
+            width={40}
+            height={40}
+          />
+          <div className="flex flex-col w-full">
+            <small className="m-0 text-xs leading-none text-neutral-300">
+              Elon musk
+            </small>
+            <h3 className="w-full m-0 text-sm font-semibold text-white line-clamp-2">
+              {currentMessage}
+            </h3>
+          </div>
+        </div>
+        <footer className="flex gap-4 text-white">
+          <input
+            type="text"
+            className="flex-grow px-4 py-2 text-sm bg-neutral-800 rounded-xl"
+            placeholder="Write somthing..."
+          />
+          <button className="p-2 px-4 text-sm bg-neutral-800 rounded-xl">
+            <BsSendFill />
+          </button>
+        </footer>
       </DynamicIsland.Body>
     </DynamicIsland.Root>
   );

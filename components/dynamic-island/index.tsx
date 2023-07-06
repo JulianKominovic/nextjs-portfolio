@@ -1,14 +1,15 @@
 "use client";
-import React, { forwardRef, useContext, useId, useMemo, useState } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from "react";
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import clsx from "clsx";
 import useMobileDetect from "use-mobile-detect-hook";
-
-const list = {
-  hover: { height: "100%", width: "100%", scale: 1 },
-  initial: { scale: 0 },
-  animate: { scale: 1 },
-};
 
 const item = {
   initial: { opacity: 0, scaleY: 0, y: "200%" },
@@ -71,11 +72,22 @@ const height: Record<SizesType, string> = {
   large: "h-14",
   full: "h-full",
 };
+const heightInPx: Record<SizesType, string> = {
+  normal: "32px",
+  large: "56px",
+  full: "100%",
+};
+const widthInPx: Record<SizesType, string> = {
+  normal: "160px",
+  large: "320px",
+  full: "100%",
+};
 const width: Record<SizesType, string> = {
   normal: "w-40",
   large: "w-72",
   full: "w-full",
 };
+
 const Root = ({
   children,
   open,
@@ -104,6 +116,19 @@ const Root = ({
   const id = useId();
   const isDesktop = useMobileDetect().isDesktop();
 
+  const list = {
+    hover: {
+      height: "100%",
+      width: "100%",
+      scale: 1,
+    },
+    initial: { scale: 0 },
+    animate: {
+      height: heightInPx[barHeight],
+      width: widthInPx[barWidth],
+      scale: 1,
+    },
+  };
   return (
     <DynamicIslandProvider
       id={id}
@@ -123,18 +148,24 @@ const Root = ({
         onTapCancel={onTapCancel}
         onTapStart={onTapStart}
         onHoverStart={(e, info) => {
+          console.log("HOVER START");
+
           onHoverStart?.(e, info);
           !freezed && isDesktop && setState("hovering");
         }}
         onTap={(e, info) => {
+          console.log("TAP");
+
           onTap?.(e, info);
           !freezed && setState("double-tap");
         }}
         onBlur={(e) => {
+          console.log("BLUR");
           onBlur?.(e);
           !freezed && setState("hovering");
         }}
         onFocus={(e) => {
+          console.log("FOCUS");
           onFocus?.(e);
           !freezed && setState("double-tap");
         }}
@@ -152,6 +183,8 @@ const Root = ({
           height[barHeight],
           width[barWidth]
         )}
+        layout
+        layoutId={id}
       >
         {children}
       </motion.div>
@@ -184,6 +217,17 @@ const Bar = ({ children, ...rest }: HTMLMotionProps<"div">) => {
 };
 
 const Body = ({ children, ...rest }: HTMLMotionProps<"main">) => {
+  const child = React.Children.toArray(children as any).map((child, index) => {
+    return React.cloneElement(child as any, {
+      onClick: (e) => e.stopPropagation(),
+      onPointerDownCapture: (e) => {
+        e.stopPropagation();
+      },
+      onFocusCapture: (e) => {
+        e.stopPropagation();
+      },
+    });
+  });
   return (
     <motion.main
       variants={item}
@@ -196,9 +240,9 @@ const Body = ({ children, ...rest }: HTMLMotionProps<"main">) => {
           ...rest.transition,
         } as any
       }
-      className={clsx("w-full h-full px-4 py-2", rest.className)}
+      className={clsx("w-full h-full p-4", rest.className)}
     >
-      {children}
+      {child}
     </motion.main>
   );
 };
@@ -250,8 +294,7 @@ const Animated = (props: HTMLMotionProps<"div">) => (
     {...(props as any)}
     className={clsx("w-full h-full", props.className)}
     initial={{
-      y: "-100%",
-      opacity: 1,
+      opacity: 0,
     }}
     animate={{
       y: 0,
